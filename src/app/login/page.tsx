@@ -6,7 +6,7 @@ import {useRouter, useSearchParams} from 'next/navigation';
 import {signInWithCustomToken} from 'firebase/auth';
 import {auth} from '@/libs/firebaseConfig';
 import {useAuth} from '@/context/AuthContext';
-import {Eye, EyeOff, LogIn, UserPlus} from 'lucide-react';
+import {Eye, EyeOff, LogIn, UserPlus, Mail, Lock} from 'lucide-react';
 import {Turnstile, type TurnstileInstance} from '@marsidev/react-turnstile';
 
 type LoginFormType = {email: string; password: string};
@@ -22,7 +22,6 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
-  // Widget Reference
   const turnstileRef = useRef<TurnstileInstance>(null);
 
   const rawRedirect = searchParams.get('redirect');
@@ -101,80 +100,90 @@ function LoginForm() {
 
   if (authLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <span className="loading loading-spinner loading-lg"></span>
+      <div className="bg-base-200 flex min-h-screen items-center justify-center">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
       </div>
     );
   }
 
   return (
-    <div className="hero bg-base-200 min-h-screen">
-      <div className="hero-content w-full flex-col gap-8 px-2 lg:flex-row-reverse lg:gap-16">
-        <div className="max-w-xl text-center lg:text-left">
-          <h1 className="text-3xl font-bold sm:text-5xl">Welcome back!</h1>
-          <p className="text-base-content/80 py-6 text-sm sm:text-base">
-            Access your dashboard to manage your restaurant, track menu updates, and coordinate with your team.
+    <div className="hero bg-base-200 min-h-screen overflow-x-hidden">
+      <div className="hero-content w-full max-w-[100vw] flex-col gap-10 px-4 lg:flex-row-reverse lg:gap-20">
+        <div className="max-w-lg text-center lg:text-left">
+          <div className="badge badge-primary badge-outline mb-4 font-medium">Dashboard Access</div>
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Welcome back!</h1>
+          <p className="text-base-content/70 py-6 text-base leading-relaxed">
+            Access your dashboard to manage your restaurant profile, track digital menu updates, and keep your customers
+            informed.
           </p>
         </div>
 
-        <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-          <div className="card-body p-3 sm:p-8">
-            <h2 className="card-title mb-4 justify-center text-2xl">Sign In</h2>
+        <div className="card border-base-300 bg-base-100 w-full max-w-md shrink-0 rounded-[2rem] border shadow-2xl">
+          <div className="card-body p-4 sm:p-10">
+            <h2 className="card-title mb-6 justify-center text-2xl font-bold">Sign In</h2>
 
-            <form onSubmit={handleSubmit} noValidate>
-              <fieldset className="fieldset w-full space-y-3">
-                <div className="form-control w-full">
-                  <label className="label" htmlFor="email">
-                    <span className="label-text font-medium">Email</span>
-                  </label>
+            <form onSubmit={handleSubmit} noValidate className="space-y-4">
+              <div className="form-control w-full">
+                <div className="label pt-0 pb-1.5">
+                  <span className="label-text font-semibold">Email</span>
+                </div>
+                <label
+                  className={`input input-bordered flex items-center gap-3 ${error && !form.email ? 'input-error' : ''}`}
+                >
+                  <Mail className="size-4 shrink-0 opacity-50" />
                   <input
                     id="email"
                     type="email"
-                    className="input input-bordered w-full"
+                    className="min-w-0 grow"
                     placeholder="you@example.com"
                     value={form.email}
                     onChange={handleChange('email')}
                     required
                     autoComplete="email"
                   />
-                </div>
+                </label>
+              </div>
 
-                <div className="form-control w-full">
-                  <label className="label" htmlFor="password">
-                    <span className="label-text font-medium">Password</span>
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      className="input input-bordered w-full pr-10"
-                      placeholder="••••••••"
-                      value={form.password}
-                      onChange={handleChange('password')}
-                      required
-                      autoComplete="current-password"
-                    />
-                    <button
-                      type="button"
-                      className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 transition-colors hover:text-gray-700"
-                      onClick={() => setShowPassword(!showPassword)}
-                      tabIndex={-1}
-                      aria-label="Toggle password visibility"
-                    >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                    </button>
-                  </div>
-                  <div className="mt-1 text-right">
-                    <Link
-                      href="/forgot-password"
-                      className="link link-hover text-base-content/60 hover:text-primary text-xs transition-colors"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
+              <div className="form-control w-full">
+                <div className="label pt-0 pb-1.5">
+                  <span className="label-text font-semibold">Password</span>
                 </div>
+                <label
+                  className={`input input-bordered flex items-center gap-3 ${error && !form.password ? 'input-error' : ''}`}
+                >
+                  <Lock className="size-4 shrink-0 opacity-50" />
+                  <input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    className="min-w-0 grow"
+                    placeholder="••••••••"
+                    value={form.password}
+                    onChange={handleChange('password')}
+                    required
+                    autoComplete="current-password"
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-xs btn-circle text-base-content/50 hover:text-base-content shrink-0"
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex={-1}
+                    aria-label="Toggle password visibility"
+                  >
+                    {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                  </button>
+                </label>
+                <div className="mt-2 text-right">
+                  <Link
+                    href="/forgot-password"
+                    className="link link-hover text-base-content/60 hover:text-primary text-xs font-medium transition-colors"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
+              </div>
 
-                <div className="flex w-full justify-center overflow-hidden py-2">
+              <div className="bg-base-200/50 border-base-300 flex w-full max-w-full justify-center overflow-hidden rounded-xl border py-3 shadow-sm">
+                <div className="max-w-full overflow-x-auto overflow-y-hidden">
                   <Turnstile
                     ref={turnstileRef}
                     siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
@@ -190,32 +199,31 @@ function LoginForm() {
                     options={{theme: 'light', size: 'flexible'}}
                   />
                 </div>
+              </div>
 
-                {error && (
-                  <div className="alert alert-error w-full justify-center rounded-lg py-2 text-sm">{error}</div>
+              {error && (
+                <div className="alert alert-error text-error-content rounded-xl py-3 text-sm break-words shadow-sm">
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <button className="btn btn-primary mt-2 w-full shadow-sm" type="submit" disabled={submitting}>
+                {submitting ? (
+                  <span className="loading loading-spinner loading-sm"></span>
+                ) : (
+                  <>
+                    <LogIn className="size-4 shrink-0" /> Sign In
+                  </>
                 )}
-
-                <button className="btn btn-neutral mt-2 w-full" type="submit" disabled={submitting}>
-                  {submitting ? (
-                    <span className="loading loading-spinner loading-sm"></span>
-                  ) : (
-                    <>
-                      <LogIn className="mr-2 h-4 w-4" /> Login
-                    </>
-                  )}
-                </button>
-              </fieldset>
+              </button>
             </form>
 
-            <div className="divider text-base-content/40 my-4 text-xs">OR</div>
+            <div className="divider text-base-content/30 my-6 text-xs font-medium">OR</div>
 
-            <div className="text-center text-sm">
+            <div className="text-base-content/70 text-center text-sm">
               Don&apos;t have an account?{' '}
-              <Link
-                href="/register"
-                className="link link-hover text-primary inline-flex items-center gap-1 font-medium"
-              >
-                Create Account <UserPlus className="h-3 w-3" />
+              <Link href="/register" className="link link-hover text-primary inline-flex items-center gap-1 font-bold">
+                Create Account <UserPlus className="size-3.5" />
               </Link>
             </div>
           </div>
@@ -229,8 +237,8 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center">
-          <span className="loading loading-spinner loading-lg"></span>
+        <div className="bg-base-200 flex min-h-screen items-center justify-center">
+          <span className="loading loading-spinner loading-lg text-primary"></span>
         </div>
       }
     >
