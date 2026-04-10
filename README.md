@@ -4,6 +4,10 @@ Menucraft is a full-stack digital menu builder for restaurants. It allows restau
 
 This project was built as a portfolio-grade, production-style application to demonstrate practical engineering skills across frontend, backend, authentication, data modeling, API security, and UI/UX.
 
+## Live demo
+
+- Production app: https://menucraft-two.vercel.app/
+
 ## Why this project is resume-ready
 
 - Solves a real-world problem with clear business value.
@@ -21,36 +25,6 @@ This project was built as a portfolio-grade, production-style application to dem
 - QR sharing: Dashboard-generated menu URL and QR code.
 - Role-aware navigation: Permission mapping for user/admin capability control.
 
-
-The landing page is in `src/app/page.tsx`.
-
-It composes the home screen from four reusable sections:
-
-- `HeroSection`
-- `AboutProjectSection`
-- `FeatureSection`
-- `TechStackSection`
-
-Current structure:
-
-```tsx
-import {HeroSection} from '@/components/home/HeroSection';
-import {AboutProjectSection} from '@/components/home/AboutProjectSection';
-import {TechStackSection} from '@/components/home/TechStackSection';
-import {FeatureSection} from '@/components/home/FeatureSection';
-
-export default function Home() {
-	return (
-		<div className="mx-auto mb-20 flex w-full max-w-7xl flex-col gap-16 px-4 py-6 md:px-6 md:py-10">
-			<HeroSection />
-			<AboutProjectSection />
-			<FeatureSection />
-			<div className="divider opacity-50" />
-			<TechStackSection />
-		</div>
-	);
-}
-```
 
 ## Tech stack
 
