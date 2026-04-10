@@ -1,45 +1,53 @@
 'use client';
 
 import Link from 'next/link';
-import {LayoutDashboard, LogOut, BookOpen, Settings, Store, UserCircle} from 'lucide-react';
+import {LayoutDashboard, LogOut, BookOpen, Settings, Store, UserCircle, Users} from 'lucide-react';
 import {usePathname} from 'next/navigation';
 import {useAuth} from '@/context/AuthContext';
+import {Permission, hasPermission} from '@/types/roles';
 
 const menuItems = [
   {
     href: '/dashboard',
     label: 'Dashboard',
     icon: LayoutDashboard,
+    permission: Permission.VIEW_DASHBOARD,
   },
   {
     href: '/dashboard/restaurant',
     label: 'Restaurant Profile',
     icon: Store,
+    permission: Permission.MANAGE_RESTAURANT,
   },
   {
     href: '/dashboard/menus',
     label: 'My Menus',
     icon: BookOpen,
+    permission: Permission.MANAGE_MENUS,
   },
   {
     href: '/dashboard/account',
     label: 'Account',
     icon: UserCircle,
+    permission: Permission.MANAGE_ACCOUNT,
   },
   {
-    href: '/dashboard/settings',
-    label: 'Settings',
-    icon: Settings,
+    href: '/admin/users',
+    label: 'All Users',
+    icon: Users,
+    permission: Permission.VIEW_ALL_USERS,
   },
 ];
 
 export default function Sidebar() {
-  const {user, loading, signOut} = useAuth();
+  const {user, claims, loading, signOut} = useAuth();
   const pathname = usePathname();
 
   if (loading || !user) {
     return null;
   }
+
+  const filteredMenuItems = menuItems.filter((item) => hasPermission(claims?.role, item.permission));
 
   return (
     <div className="drawer-side z-40">
@@ -67,16 +75,16 @@ export default function Sidebar() {
           </div>
         </div>
 
-        <ul className="menu text-base-content gap-1 px-3 py-2">
-          {menuItems.map((item) => {
+        <ul className="menu text-base-content w-full gap-1 px-3 py-2">
+          {filteredMenuItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
 
             return (
-              <li key={item.href}>
+              <li key={item.href} className="w-full">
                 <Link
                   href={item.href}
-                  className={isActive ? 'active bg-primary text-primary-content' : 'hover:bg-base-300'}
+                  className={isActive ? 'active bg-primary text-primary-content w-full' : 'hover:bg-base-300 w-full'}
                 >
                   <Icon className="size-5" />
                   <span>{item.label}</span>

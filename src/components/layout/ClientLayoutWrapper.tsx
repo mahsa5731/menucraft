@@ -9,6 +9,11 @@ import ProtectedRoute from '@/components/auth/ProtectedRoute';
 export default function ClientLayoutWrapper({children}: {children: React.ReactNode}) {
   const pathname = usePathname();
   const isDashboardPage = pathname.startsWith('/dashboard');
+  const isPublicMenu = pathname?.startsWith('/menu/');
+
+  if (isPublicMenu) {
+    return <main className="bg-base-200 min-h-screen">{children}</main>;
+  }
 
   if (isDashboardPage) {
     return (

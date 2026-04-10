@@ -16,7 +16,7 @@ export default function Header() {
     user?.displayName?.trim()?.charAt(0)?.toUpperCase() || user?.email?.trim()?.charAt(0)?.toUpperCase() || 'U';
 
   return (
-    <nav className="navbar border-base-200 bg-base-300 border-b px-4">
+    <nav className="navbar border-base-200 bg-base-300/30 sticky top-0 z-20 border-b px-4 backdrop-blur-md">
       <div className="flex flex-1 items-center gap-2">
         {user && isDashboardPage ? (
           <label htmlFor="main-drawer" aria-label="open sidebar" className="btn btn-square btn-ghost lg:hidden">
@@ -30,12 +30,6 @@ export default function Header() {
       </div>
 
       <div className="flex items-center gap-2">
-        {!loading && user ? (
-          <Link href="/dashboard" className="btn btn-ghost btn-sm hidden sm:inline-flex">
-            Dashboard
-          </Link>
-        ) : null}
-
         <ThemeToggle />
 
         {!loading && !user ? (
@@ -72,12 +66,6 @@ export default function Header() {
                 <Link href="/dashboard" className="gap-3">
                   <LayoutDashboard className="size-4" />
                   Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link href="/profile" className="gap-3">
-                  <UserCircle className="size-4" />
-                  Profile
                 </Link>
               </li>
               <li>
