@@ -1,7 +1,7 @@
 import {doc, getDoc, serverTimestamp, setDoc} from 'firebase/firestore';
 import {deleteObject, getDownloadURL, ref, uploadBytes} from 'firebase/storage';
 import {db, storage} from '@/libs/firebaseConfig';
-import type {RestaurantProfile} from '@/types/restaurantProfile';
+import {RestaurantProfile} from '@/types/schema';
 
 const collectionName = 'restaurantProfiles';
 
@@ -20,6 +20,7 @@ export async function getRestaurantProfile(uid: string): Promise<RestaurantProfi
     phone: data.phone ?? '',
     address: data.address ?? '',
     coverImage: data.coverImage ?? '',
+    menuSections: data.menuSections ?? [],
     updatedAt: data.updatedAt?.toDate?.()?.toISOString?.() ?? null,
   };
 }
@@ -33,7 +34,8 @@ export async function saveRestaurantProfile(uid: string, profile: RestaurantProf
       name: profile.name.trim(),
       phone: profile.phone.trim(),
       address: profile.address.trim(),
-      coverImage: profile.coverImage.trim(),
+      coverImage: profile.coverImage?.trim() ?? '',
+      menuSections: profile.menuSections,
       updatedAt: serverTimestamp(),
     },
     {merge: true}
