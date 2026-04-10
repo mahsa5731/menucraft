@@ -21,8 +21,33 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Menucraft',
-  description: 'Create, manage, and share restaurant menus with Menucraft.',
+  title: {
+    default: 'Menucraft | Digital Menu Builder',
+    template: '%s | Menucraft',
+  },
+  description:
+    'A full-stack application for restaurant owners to create, manage, and share professional digital menus instantly.',
+  keywords: ['restaurant menu', 'digital menu', 'QR menu builder', 'Menucraft', 'restaurant tech'],
+  authors: [{name: 'Mahsa', url: 'https://bymahsa.com'}],
+  creator: 'Mahsa',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://github.com/mahsa5731/menucraft',
+    title: 'Menucraft | Digital Menu Builder',
+    description: 'Create, manage, and share restaurant menus with Menucraft.',
+    siteName: 'Menucraft',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Menucraft',
+    description: 'Professional digital menu builder for modern restaurants.',
+    creator: '@mahsa5731',
+  },
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({
