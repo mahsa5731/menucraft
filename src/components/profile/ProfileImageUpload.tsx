@@ -25,8 +25,13 @@ export function ProfileImageUpload({value, onChange}: ProfileImageUploadProps) {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith('image/')) {
-      addToast('Please select a valid image file.', ToastType.ERROR);
+    if (file.size > 2 * 1024 * 1024) {
+      addToast('Please select an image smaller than 2MB.', ToastType.ERROR);
+      event.target.value = '';
+      return;
+    }
+    if (!['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
+      addToast('Please select a valid image file (PNG, JPEG, JPG).', ToastType.ERROR);
       event.target.value = '';
       return;
     }
@@ -79,7 +84,13 @@ export function ProfileImageUpload({value, onChange}: ProfileImageUploadProps) {
       </div>
 
       <div className="rounded-box border-base-300 bg-base-200 flex items-center justify-between border p-4">
-        <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleSelectImage} />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/png, image/jpeg, image/jpg"
+          className="hidden"
+          onChange={handleSelectImage}
+        />
 
         <div className="flex gap-3">
           <button
